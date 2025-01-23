@@ -62,18 +62,16 @@
                     </div>
 
                     <div>
-                        <div class="mb-2 flex items-center gap-2">
-                            <label for="select-city-input-3"
-                                class="block text-sm font-medium text-gray-900 dark:text-white"> City* </label>
-                        </div>
-                        <select id="select-city-input-3"
-                            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500">
-                            <option selected>San Francisco</option>
-                            <option value="NY">New York</option>
-                            <option value="LA">Los Angeles</option>
-                            <option value="CH">Chicago</option>
-                            <option value="HU">Houston</option>
-                        </select>
+                        <label for="address_search"
+                            class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                            Address*
+                        </label>
+                        <input type="text" id="address_search"
+                            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                            placeholder="Pesanggrahan" required />
+                        <input type="hidden" name="latitude" id="latitude">
+                        <input type="hidden" name="longitude" id="longitude">
+                        <input type="hidden" name="address" id="address">
                     </div>
 
                     <div>
@@ -234,3 +232,28 @@
         </div>
     </div>
 </form>
+
+{{-- <script>
+    function initAutocomplete() {
+        const input = document.getElementById("address_search");
+        const autocomplete = new google.maps.places.Autocomplete(input);
+
+        //
+        autocomplete.addListener("place_changed", () => {
+            const place = autocomplete.getPlace();
+
+            //
+            const latitude = place.geometry.location.lat();
+            const longitude = place.geometry.location.lng();
+            const address = place.formatted_address;
+
+            //
+            document.getElementById("latitude").value = latitude;
+            document.getElementById("longitude").value = longitude;
+            document.getElementById("address").value = address;
+        });
+    }
+
+    // Autocomplete dropdown
+    google.maps.event.addDomListener(window, "load", initAutocomplete);
+</script> --}}

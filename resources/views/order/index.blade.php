@@ -12,6 +12,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     {{-- AlpineJs --}}
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    {{-- Google Maps Api --}}
+    {{-- <script src="https://maps.googleapis.com/maps/api/js?key={{ config('google.key') }}&libraries=places&region=id">
+    </script> --}}
 
     <title>@yield('title', 'HadiNET | Order')</title>
 
