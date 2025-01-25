@@ -9,3 +9,9 @@ Route::get('/', function () {
 Route::get('/order', function () {
     return view('order.index');
 });
+
+// Admin Route
+Route::prefix('admin')->group(function () {
+    // Manage Users Route
+    Route::resource('users', UserController::class);
+});
