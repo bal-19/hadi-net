@@ -12,6 +12,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     {{-- AlpineJs --}}
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    {{-- Sweet Alert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <title>@yield('title', 'Admin | Users')</title>
 </head>
@@ -42,12 +44,6 @@
         <div class="mx-auto max-w-screen-2xl px-4 lg:px-12">
             @include('admin.users._table', ['users' => $users])
         </div>
-
-        @include('admin.users.__create-modal')
-        <!-- Update modal -->
-        @include('admin.users.__update-modal')
-        <!-- Delete modal -->
-        @include('admin.users.__delete-modal')
     </section>
     <!-- End table -->
 
