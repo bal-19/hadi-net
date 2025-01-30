@@ -17,11 +17,11 @@ class DatabaseSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             // Users table
             DB::table("users")->insert([
                 [
-                    "role" => $faker->randomElement(['Super Admin', 'Admin', 'Technician', 'User']),
+                    "role" => $faker->randomElement(['super admin', 'admin', 'technician', 'user']),
                     "name" => $faker->name,
                     "gender" => $faker->randomElement(['male', 'female', 'other']),
                     "age" => rand(17, 40),

@@ -67,25 +67,25 @@
                             {{ $user->name }}
                         </th>
                         <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            @if ($user->role == 'Super Admin')
+                            @if ($user->role == 'super admin')
                                 <span
                                     class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-red-900 dark:text-red-300">
-                                    {{ $user->role }}
+                                    {{ ucwords($user->role) }}
                                 </span>
-                            @elseif ($user->role == 'Admin')
+                            @elseif ($user->role == 'admin')
                                 <span
                                     class="bg-purple-100 text-purple-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-purple-900 dark:text-purple-300">
-                                    {{ $user->role }}
+                                    {{ ucwords($user->role) }}
                                 </span>
-                            @elseif ($user->role == 'Technician')
+                            @elseif ($user->role == 'technician')
                                 <span
                                     class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-yellow-900 dark:text-yellow-300">
-                                    {{ $user->role }}
+                                    {{ ucwords($user->role) }}
                                 </span>
-                            @elseif ($user->role == 'User')
+                            @elseif ($user->role == 'user')
                                 <span
                                     class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-blue-900 dark:text-blue-300">
-                                    {{ $user->role }}
+                                    {{ ucwords($user->role) }}
                                 </span>
                             @endif
                         </td>

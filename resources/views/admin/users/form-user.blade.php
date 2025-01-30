@@ -31,18 +31,18 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg transition-all duration-300 focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             @if (isset($user))
                                 <option>Select role</option>
-                                <option value="Super Admin" {{ $user->role == 'Super Admin' ? 'selected' : '' }}>Super
+                                <option value="super admin" {{ $user->role == 'super admin' ? 'selected' : '' }}>Super
                                     Admin</option>
-                                <option value="Admin" {{ $user->role == 'Admin' ? 'selected' : '' }}>Admin</option>
-                                <option value="Technician" {{ $user->role == 'Technician' ? 'selected' : '' }}>
+                                <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                                <option value="technician" {{ $user->role == 'technician' ? 'selected' : '' }}>
                                     Technician</option>
-                                <option value="User" {{ $user->role == 'User' ? 'selected' : '' }}>User</option>
+                                <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
                             @else
                                 <option selected="">Select role</option>
-                                <option value="Super Admin">Super Admin</option>
-                                <option value="Admin">Admin</option>
-                                <option value="Technician">Technician</option>
-                                <option value="User">User</option>
+                                <option value="super admin">Super Admin</option>
+                                <option value="admin">Admin</option>
+                                <option value="technician">Technician</option>
+                                <option value="user">User</option>
                             @endif
                         </select>
                     </div>
