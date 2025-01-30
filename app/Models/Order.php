@@ -22,6 +22,11 @@ class Order extends Model
         'snap_token'
     ];
 
+    public function getRouteKeyName()
+    {
+        return 'code';
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
