@@ -15,6 +15,11 @@ class Package extends Model
         'desc'
     ];
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'package_id');
+    }
+
     public function scopeFilter(Builder $query, array $filters)
     {
         $query->when(

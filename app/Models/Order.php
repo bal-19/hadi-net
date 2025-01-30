@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
@@ -20,4 +21,28 @@ class Order extends Model
     protected $hidden = [
         'snap_token'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function technician()
+    {
+        return $this->belongsTo(User::class, 'technician_id')->where('role', 'Technician');
+    }
+
+    public function package()
+    {
+        return $this->belongsTo(Package::class, 'package_id');
+    }
+
+    public function scopeFilter(Builder $query, array $filters)
+    {
+        $query->when(
+            $filters['search'] ?? false,
+            fn($query, $search) =>
+            $query->where('code', 'like', '%' . $search . '%')
+        );
+    }
 }
