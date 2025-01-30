@@ -50,6 +50,7 @@
                     <th scope="col" class="p-4">Bandwidth</th>
                     <th scope="col" class="p-4">Duration</th>
                     <th scope="col" class="p-4">Price</th>
+                    <th scope="col" class="p-4">Description</th>
                     <th scope="col" class="p-4">Created At</th>
                     <th scope="col" class="p-4">Updated At</th>
                     <th scope="col" class="p-4">Action</th>
@@ -71,6 +72,9 @@
                         </td>
                         <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             IDR {{ number_format($package->price, 0, ',', '.') }}
+                        </td>
+                        <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ $package->desc }}
                         </td>
                         <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $package->created_at }}
@@ -112,7 +116,7 @@
                     </tr>
                 @empty
                     <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                        <td colspan="10"
+                        <td colspan="7"
                             class="px-4 py-3 font-medium text-center text-gray-900 whitespace-nowrap dark:text-white">
                             <div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
                                 role="alert">
