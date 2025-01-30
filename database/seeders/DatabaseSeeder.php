@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,55 +15,55 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table("users")->insert([
+        $faker = Faker::create();
+
+        for ($i = 0; $i < 100; $i++) {
+            // Users table
+            DB::table("users")->insert([
+                [
+                    "role" => $faker->randomElement(['Super Admin', 'Admin', 'Technician', 'User']),
+                    "name" => $faker->name,
+                    "gender" => $faker->randomElement(['male', 'female', 'other']),
+                    "age" => rand(17, 40),
+                    "address" => $faker->address,
+                    "phone_number" => $faker->phoneNumber,
+                    "email" => $faker->unique()->safeEmail,
+                    "password" => Hash::make('password'),
+                    "created_at" => now(),
+                    "updated_at" => now()
+                ]
+            ]);
+        }
+
+        // Packages table
+        DB::table("packages")->insert([
             [
-                "role" => "Super Admin",
-                "name" => "Vivi Maria",
-                "gender" => "female",
-                "age" => 25,
-                "address" => "Junggo Street",
-                "phone_number" => "08253991552",
-                "email" => "vivi.mar@gmail.com",
-                "password" => Hash::make("vvMaria123"),
+                "name" => "Paket 10 Mbps",
+                "bandwidth" => 10,
+                "duration" => 1,
+                "price" => 50000,
+                "desc" => "Paket paling murah dengan kecepatan internet yang mantap dengan harga yang murah",
                 "created_at" => now(),
                 "updated_at" => now()
             ],
             [
-                "role" => "Admin",
-                "name" => "Tono Sigura",
-                "gender" => "male",
-                "age" => 30,
-                "address" => "Pesanggrahan, Kota Batu",
-                "phone_number" => "08678312332",
-                "email" => "sigura.tn@gmail.com",
-                "password" => Hash::make("ton123"),
+                "name" => "Paket 25 Mbps",
+                "bandwidth" => 25,
+                "duration" => 1,
+                "price" => 120000,
+                "desc" => "Paket dengan penjualan paling banyak yang menawarkan kecepatan internet yang cepat dengan harga yang terjangkau",
                 "created_at" => now(),
                 "updated_at" => now()
             ],
             [
-                "role" => "Technician",
-                "name" => "Edi Satria",
-                "gender" => "male",
-                "age" => 48,
-                "address" => "Junggo Street",
-                "phone_number" => "081531331552",
-                "email" => "edi.junggo@gmail.com",
-                "password" => Hash::make("ediJunior"),
+                "name" => "Paket 100 Mbps",
+                "bandwidth" => 100,
+                "duration" => 1,
+                "price" => 225000,
+                "desc" => "Paket dengan kecepatan internet tercepat dengan harga yang terjangkau untuk kaum menengah",
                 "created_at" => now(),
                 "updated_at" => now()
-            ],
-            [
-                "role" => "User",
-                "name" => "Harunkun Etyav",
-                "gender" => "other",
-                "age" => 18,
-                "address" => "Beji",
-                "phone_number" => "081556715532",
-                "email" => "run.kun@gmail.com",
-                "password" => Hash::make("kezet123"),
-                "created_at" => now(),
-                "updated_at" => now()
-            ],
+            ]
         ]);
     }
 }
