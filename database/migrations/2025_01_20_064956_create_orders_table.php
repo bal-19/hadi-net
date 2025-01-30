@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 20);
+            $table->string('code', 20)->unique()->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('technician_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('package_id')->constrained('packages')->onDelete('cascade');
             $table->dateTime('order_date');
-            $table->string('order_status');
+            $table->enum('order_status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending');
             $table->dateTime('installation_date')->nullable();
-            $table->longText('snap_token');
+            $table->longText('snap_token')->nullable();
             $table->timestamps();
         });
     }
