@@ -5,8 +5,12 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home.index');
+// Route::get('/', function () {
+//     return view('home.index');
+// });
+
+Route::get('/order', function () {
+    return view('user.orders.index');
 });
 
 // Admin Route
