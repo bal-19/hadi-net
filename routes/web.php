@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\UserController;
@@ -9,9 +10,7 @@ use Illuminate\Support\Facades\Route;
 //     return view('home.index');
 // });
 
-Route::get('/order', function () {
-    return view('user.orders.index');
-});
+Route::get('/order', [PackageController::class, 'listForUser'])->name('user.orders.create');
 
 // Admin Route
 Route::prefix('admin')->group(function () {
@@ -21,4 +20,13 @@ Route::prefix('admin')->group(function () {
     Route::resource('packages', PackageController::class);
     // Manage Orders Route
     Route::resource('orders', OrderController::class);
+});
+
+// Auth Route
+Route::prefix('auth')->group(function () {
+    Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('register', [AuthController::class, 'register']);
 });
