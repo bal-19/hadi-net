@@ -12,6 +12,8 @@ class Order extends Model
         'user_id',
         'technician_id',
         'package_id',
+        'latitude',
+        'longitude',
         'order_date',
         'order_status',
         'installation_date',
