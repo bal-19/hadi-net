@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class PackageController extends Controller
 {
+    public function listForUser()
+    {
+        $packages = Package::all();
+        return view('user.orders.index', compact('packages'));
+    }
+
     public function index(Request $request)
     {
         $packages = Package::filter($request->only('search'))->latest()->paginate(10)->withQueryString();
