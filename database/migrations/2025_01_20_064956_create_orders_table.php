@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('technician_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('package_id')->constrained('packages')->onDelete('cascade');
+            $table->double('installation_fee');
+            $table->double('total');
             $table->string('latitude');
             $table->string('longitude');
             $table->dateTime('order_date');
