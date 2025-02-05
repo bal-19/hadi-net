@@ -23,12 +23,6 @@
             </form>
         </div>
 
-        @if (session('success'))
-            <script>
-                Swal.fire('Success', '{{ session('success') }}', 'success');
-            </script>
-        @endif
-
         <div
             class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
             <a href="{{ route('packages.create') }}"
@@ -132,24 +126,3 @@
         {{ $packages->links() }}
     </nav>
 </div>
-
-<script>
-    document.querySelectorAll('.delete-confirm').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.closest('form').submit();
-                }
-            });
-        });
-    });
-</script>
