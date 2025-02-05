@@ -24,9 +24,14 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
+        $user = User::where('email', $credentials['email'])->first();
 
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('/order');
+            if ($user->role == 'user') {
+                return redirect()->intended('/order')->with('success', 'Login successfully!');
+            } else {
+                return redirect()->intended('/admin/users')->with('success', 'Login successfully!');
+            }
         }
 
         return back()->withErrors([
@@ -67,7 +72,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('user.orders.create');
+        return redirect()->route('user.orders.create')->with('success', 'Account created successfully!');
     }
 
     public function logout(Request $request)
@@ -76,6 +81,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        return redirect()->route('login')->with('success', 'Logout successfully!');
     }
 }
