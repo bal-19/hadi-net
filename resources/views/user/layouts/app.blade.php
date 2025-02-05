@@ -25,7 +25,8 @@
 
 <body class="bg-slate-100">
     {{-- Start Loading Element --}}
-    <div id="loading" class="z-50 hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+    <div id="loading" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center"
+        style="z-index: 1001">
         <svg aria-hidden="true" class="inline w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-indigo-600"
             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
