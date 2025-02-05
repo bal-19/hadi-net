@@ -61,12 +61,43 @@
 
     {{-- Start Main --}}
     <main>
+        @if (session('success'))
+            <script>
+                Swal.fire('Success', '{{ session('success') }}', 'success');
+            </script>
+        @elseif (session('error'))
+            <script>
+                Swal.fire('Error', '{{ session('error') }}', 'error')
+            </script>
+        @endif
+
         @yield('content')
     </main>
     {{-- End Main --}}
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        // swall fire
+        document.querySelectorAll('.delete-confirm').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.closest('form').submit();
+                    }
+                });
+            });
+        });
+
+        // loading effect
         $(document).ready(function() {
             // when submit form
             $('form').on('submit', function() {
