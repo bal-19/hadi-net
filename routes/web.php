@@ -14,14 +14,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/order', [PackageController::class, 'listForUser'])->name('user.orders.create')->middleware('auth');
 
 // Admin Route
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware(['auth', 'role.session'])->group(function () {
     // Manage Users Route
     Route::resource('users', UserController::class);
     // Manage Packages Route
     Route::resource('packages', PackageController::class);
     // Manage Orders Route
     Route::resource('orders', OrderController::class);
-})->middleware('auth');
+});
 
 // Auth Route
 Route::prefix('auth')->group(function () {
