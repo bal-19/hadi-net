@@ -17,7 +17,7 @@ class Package extends Model
 
     public function orders()
     {
-        return $this->hasMany(Order::class, 'package_id');
+        return $this->hasMany(Order::class);
     }
 
     public function scopeFilter(Builder $query, array $filters)
