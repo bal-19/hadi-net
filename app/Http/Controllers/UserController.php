@@ -22,7 +22,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'role' => 'required|in:Super Admin,Admin,Technician,User',
+            'role' => 'required|in:super admin,admin,technician,user',
             'name' => 'required|string|max:255',
             'gender' => 'required|in:male,female,other',
             'age' => 'required|integer|min:0',
@@ -46,7 +46,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $validate = $request->validate([
-            'role' => 'required|in:Super Admin,Admin,Technician,User',
+            'role' => 'required|in:super admin,admin,technician,user',
             'name' => 'required|string|max:255',
             'gender' => 'required|in:male,female,other',
             'age' => 'required|integer|min:0',
