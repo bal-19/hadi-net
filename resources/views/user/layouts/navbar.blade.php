@@ -37,7 +37,7 @@
                         </svg>
                         <div class="text-sm font-medium text-gray-900 dark:text-white">Order</div>
                     </a>
-                    <a href="#"
+                    <a href="{{ route('user.order.history') }}"
                         class="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group">
                         <svg class="mx-auto mb-2 w-5 h-5 text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-400"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -47,7 +47,7 @@
                             <path
                                 d="M5 19h10v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2ZM5 7a5.008 5.008 0 0 1 4-4.9 3.988 3.988 0 1 0-3.9 5.859A4.974 4.974 0 0 1 5 7Zm5 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm5-1h-.424a5.016 5.016 0 0 1-1.942 2.232A6.007 6.007 0 0 1 17 17h2a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5ZM5.424 9H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h2a6.007 6.007 0 0 1 4.366-5.768A5.016 5.016 0 0 1 5.424 9Z" />
                         </svg>
-                        <div class="text-sm font-medium text-gray-900 dark:text-white">Users</div>
+                        <div class="text-sm font-medium text-gray-900 dark:text-white">Order History</div>
                     </a>
                     <a href="#"
                         class="block p-4 text-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 group">
