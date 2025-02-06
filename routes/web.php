@@ -3,18 +3,31 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\SummaryController;
 use App\Http\Controllers\UserController;
-use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('home.index');
-// });
+// User Route
+Route::get('/', function () {
+    return view('user.home.index');
+});
 
-Route::get('/order', [PackageController::class, 'listForUser'])->name('user.orders.create')->middleware('auth');
+Route::middleware('auth')->group(function () {
+    // order
+    Route::get('/order', [OrderController::class, 'showOrderForm'])->name('user.order.index');
+    Route::post('/order', [OrderController::class, 'createOrder'])->name('user.order.store');
+    Route::get('/order/history', [OrderController::class, 'historyOrder'])->name('user.order.history');
+    Route::get('/order/{code}', [OrderController::class, 'showOrder'])->name('user.order.show');
+});
+
 
 // Admin Route
-Route::prefix('admin')->middleware(['auth', 'role.session'])->group(function () {
+Route::prefix('admin')->middleware(['role.session'])->group(function () {
+    // Manage Dashboard Route
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    });
     // Manage Users Route
     Route::resource('users', UserController::class);
     // Manage Packages Route
@@ -25,9 +38,9 @@ Route::prefix('admin')->middleware(['auth', 'role.session'])->group(function () 
 
 // Auth Route
 Route::prefix('auth')->group(function () {
-    Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('login', [AuthController::class, 'login']);
+    Route::get('login', [AuthController::class, 'showLoginForm'])->name('login')->middleware('logged');
+    Route::post('login', [AuthController::class, 'login'])->middleware('logged');
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
-    Route::post('register', [AuthController::class, 'register']);
+    Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register')->middleware('logged');
+    Route::post('register', [AuthController::class, 'register'])->middleware('logged');
 });
