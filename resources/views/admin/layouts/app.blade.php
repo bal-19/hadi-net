@@ -63,11 +63,15 @@
     <main>
         @if (session('success'))
             <script>
-                Swal.fire('Success', '{{ session('success') }}', 'success');
+                Swal.fire('Success', "{{ session('success') }}", 'success');
             </script>
         @elseif (session('error'))
             <script>
-                Swal.fire('Error', '{{ session('error') }}', 'error')
+                Swal.fire('Error', "{{ session('error') }}", 'error')
+            </script>
+        @elseif (session('warning'))
+            <script>
+                Swal.fire('Warning', "{{ session('warning') }}", 'warning')
             </script>
         @endif
 
