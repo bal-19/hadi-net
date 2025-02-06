@@ -34,6 +34,10 @@
                     <th scope="col" class="p-4">Package</th>
                     <th scope="col" class="p-4">Order Date</th>
                     <th scope="col" class="p-4">Order Status</th>
+                    <th scope="col" class="p-4">Installation Fee</th>
+                    <th scope="col" class="p-4">Total</th>
+                    <th scope="col" class="p-4">Latitude</th>
+                    <th scope="col" class="p-4">Longitude</th>
                     <th scope="col" class="p-4">Installation Date</th>
                     <th scope="col" class="p-4">Snap Token</th>
                     <th scope="col" class="p-4">Created At</th>
@@ -53,7 +57,7 @@
                             {{ $order->user->name }}
                         </td>
                         <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $order->technician->name }}
+                            {{ $order->technician->name ?? '-' }}
                         </td>
                         <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $order->package->name }}
@@ -62,7 +66,7 @@
                             {{ $order->order_date }}
                         </td>
                         <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            @if ($order->order_status == 'pending')
+                            @if ($order->order_status == 'unpaid')
                                 <span
                                     class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-yellow-900 dark:text-yellow-300">
                                     {{ ucwords($order->order_status) }}
@@ -72,12 +76,12 @@
                                     class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-blue-900 dark:text-blue-300">
                                     {{ ucwords($order->order_status) }}
                                 </span>
-                            @elseif ($order->order_status == 'completed')
+                            @elseif ($order->order_status == 'completed' || $order->order_status == 'paid')
                                 <span
                                     class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900 dark:text-green-300">
                                     {{ ucwords($order->order_status) }}
                                 </span>
-                            @elseif ($order->order_status == 'cancelled')
+                            @elseif ($order->order_status == 'cancelled' || $order->order_status == 'failed' || $order->order_status == 'expired')
                                 <span
                                     class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-red-900 dark:text-red-300">
                                     {{ ucwords($order->order_status) }}
@@ -85,7 +89,20 @@
                             @endif
                         </td>
                         <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $order->installation_date }}
+                            IDR {{ number_format($order->installation_fee, 0, ',', '.') }}
+
+                        </td>
+                        <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            IDR {{ number_format($order->total, 0, ',', '.') }}
+                        </td>
+                        <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ $order->latitude }}
+                        </td>
+                        <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ $order->longitude }}
+                        </td>
+                        <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ $order->installation_date ?? '-' }}
                         </td>
                         <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $order->snap_token }}

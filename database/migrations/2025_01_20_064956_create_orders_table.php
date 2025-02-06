@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('latitude');
             $table->string('longitude');
             $table->dateTime('order_date');
-            $table->enum('order_status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending');
+            $table->enum('order_status', ['expired', 'unpaid', 'paid', 'failed', 'processing', 'completed', 'cancelled'])->default('unpaid');
             $table->dateTime('installation_date')->nullable();
             $table->longText('snap_token')->nullable();
             $table->timestamps();
