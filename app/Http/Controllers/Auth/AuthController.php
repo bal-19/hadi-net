@@ -28,9 +28,9 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             if ($user->role == 'user') {
-                return redirect()->intended('/order')->with('success', 'Login successfully!');
+                return redirect()->intended('/')->with('success', 'Login successfully!');
             } else {
-                return redirect()->intended('/admin/users')->with('success', 'Login successfully!');
+                return redirect()->intended('/admin/dashboard')->with('success', 'Login successfully!');
             }
         }
 
