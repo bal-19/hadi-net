@@ -64,7 +64,7 @@ class OrderController extends Controller
         ]), config('app.key')), 0, 16);
 
         $order->update([
-            'code' => 'ORD-' . $code
+            'code' => 'ord-' . $code
         ]);
 
         Config::$serverKey = config('midtrans.serverKey');
@@ -97,7 +97,7 @@ class OrderController extends Controller
 
     public function showOrder($code)
     {
-        $order = Order::with('user')->where('code', $code);
+        $order = Order::with('user')->where('code', $code)->first();
         return view('user.orders.summary', compact('order'));
     }
 
