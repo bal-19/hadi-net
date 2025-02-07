@@ -16,7 +16,7 @@ class DashboardController extends Controller
 
         $totalUser = User::count();
         $totalOrder = Order::count();
-        $totalRevenue = Order::sum('total');
+        $totalRevenue = Order::where('order_status', 'completed')->sum('total');
 
         // total order has paid status;
         $paidOrders = Order::where('order_status', 'paid')
