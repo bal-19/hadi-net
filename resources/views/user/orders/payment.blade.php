@@ -12,11 +12,6 @@
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.clientKey') }}">
     </script>
     <script>
-        // when button element clicked
-        $('#pay-button').on('click', function(event) {
-            $('#loading').removeClass('hidden');
-        });
-
         document.getElementById('pay-button').onclick = function() {
             snap.pay('{{ $transaction }}');
         };
