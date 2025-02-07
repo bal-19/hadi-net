@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PaymentController;
@@ -25,9 +26,7 @@ Route::middleware('auth')->group(function () {
 // Admin Route
 Route::prefix('admin')->middleware(['role.session'])->group(function () {
     // Manage Dashboard Route
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    });
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     // Manage Users Route
     Route::resource('users', UserController::class);
     // Manage Packages Route
