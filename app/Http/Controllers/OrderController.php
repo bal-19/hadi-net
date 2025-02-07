@@ -64,7 +64,7 @@ class OrderController extends Controller
         ]), config('app.key')), 0, 16);
 
         $order->update([
-            'code' => 'ord-' . $code
+            'code' => 'ORD-' . strtoupper($code)
         ]);
 
         Config::$serverKey = config('midtrans.serverKey');
