@@ -72,7 +72,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('user.orders.create')->with('success', 'Account created successfully!');
+        return redirect('/order')->with('success', 'Account created successfully!');
     }
 
     public function logout(Request $request)
@@ -81,6 +81,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login')->with('success', 'Logout successfully!');
+        return redirect()->route('login');
     }
 }
