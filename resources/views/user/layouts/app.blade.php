@@ -40,6 +40,7 @@
     </div>
     {{-- End Loading Element --}}
 
+
     {{-- Start Header --}}
     <header class="antialiased">
         @include('user.layouts.navbar')
@@ -96,8 +97,18 @@
 
         // loading effect
         $(document).ready(function() {
+
+            $(window).on("beforeunload", function() {
+                $("#loading").removeClass("hidden");
+            });
+
             // when submit form
             $('form').on('submit', function() {
+                $('#loading').removeClass('hidden');
+            });
+
+            // when button element clicked
+            $('#pay-button').on('click', function(event) {
                 $('#loading').removeClass('hidden');
             });
 
@@ -119,6 +130,7 @@
             $(window).on("load", function() {
                 $("#loading").addClass("hidden");
             });
+
         });
     </script>
 </body>

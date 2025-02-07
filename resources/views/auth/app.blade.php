@@ -83,6 +83,10 @@
 
         // loading effect
         $(document).ready(function() {
+            $(window).on("beforeunload", function() {
+                $("#loading").removeClass("hidden");
+            });
+
             // when submit form
             $('form').on('submit', function() {
                 $('#loading').removeClass('hidden');
