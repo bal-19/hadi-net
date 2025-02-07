@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('bandwidth');
             $table->integer('duration');
-            $table->double('price');
+            $table->decimal('price', 12, 2);
             $table->longText('desc');
             $table->timestamps();
         });
