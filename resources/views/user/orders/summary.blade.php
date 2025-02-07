@@ -7,7 +7,7 @@
         <div class="mx-auto max-w-3xl">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Order summary</h2>
-                @if ($order->order_status == 'pending')
+                @if ($order->order_status == 'unpaid')
                     <span
                         class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-yellow-900 dark:text-yellow-300">
                         {{ ucwords($order->order_status) }}
@@ -22,7 +22,7 @@
                         class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900 dark:text-green-300">
                         {{ ucwords($order->order_status) }}
                     </span>
-                @elseif ($order->order_status == 'cancelled' || $order->order_status == 'failed')
+                @elseif ($order->order_status == 'cancelled' || $order->order_status == 'failed' || $order->order_status == 'expired')
                     <span
                         class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-red-900 dark:text-red-300">
                         {{ ucwords($order->order_status) }}
@@ -68,7 +68,7 @@
 
                                 <td class="p-4 text-right text-base font-bold text-gray-900 dark:text-white">
                                     IDR
-                                    {{ number_format($order->package->price, 0, ',', '.') }}/{{ $order->package->duration == 12 ? 'Year' : 'Month' }}
+                                    {{ number_format($order->package->price, 2, ',', '.') }}/{{ $order->package->duration == 12 ? 'Year' : 'Month' }}
                                 </td>
                             </tr>
                         </tbody>
@@ -83,13 +83,13 @@
                             <dl class="flex items-center justify-between gap-4">
                                 <dt class="text-gray-500 dark:text-gray-400">Original price</dt>
                                 <dd class="text-base font-medium text-gray-900 dark:text-white">
-                                    IDR {{ number_format($order->package->price, 0, ',', '.') }}</dd>
+                                    IDR {{ number_format($order->package->price, 2, ',', '.') }}</dd>
                             </dl>
 
                             <dl class="flex items-center justify-between gap-4">
                                 <dt class="text-gray-500 dark:text-gray-400">Installation Fee</dt>
                                 <dd class="text-base font-medium text-gray-900 dark:text-white">
-                                    IDR {{ number_format($order->installation_fee, 0, ',', '.') }}</dd>
+                                    IDR {{ number_format($order->installation_fee, 2, ',', '.') }}</dd>
                             </dl>
                         </div>
 
@@ -97,13 +97,16 @@
                             class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
                             <dt class="text-lg font-bold text-gray-900 dark:text-white">Total</dt>
                             <dd class="text-lg font-bold text-gray-900 dark:text-white">IDR
-                                {{ number_format($order->total, 0, ',', '.') }}</dd>
+                                {{ number_format($order->total, 2, ',', '.') }}</dd>
                         </dl>
                     </div>
 
                     <div class="sm:flex sm:items-center">
                         <button type="button" id="pay"
-                            class="mt-4 flex w-full items-center justify-center rounded-lg bg-primary-700  px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300  dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:mt-0">Proceed
+                            class="mt-4 mx-1 flex w-full items-center justify-center rounded-lg border border-red-700 px-5 py-2.5 text-sm font-medium text-red-700 duration-300 transition-all hover:bg-red-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-red-300  dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900 sm:mt-0">Cancel
+                            Order</button>
+                        <button type="button" id="pay"
+                            class="mt-4 mx-1 flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white duration-300 transition-all hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:mt-0">Proceed
                             to Payment</button>
                     </div>
                 </div>
