@@ -32,6 +32,11 @@ class OrderController extends Controller
 
     public function createOrder(Request $request)
     {
+        Config::$serverKey = config('midtrans.serverKey');
+        Config::$isProduction = config('midtrans.isProduction');
+        Config::$is3ds = config('midtrans.is3ds');
+        Config::$isSanitized = config('midtrans.isSanitized');
+
         $package = Package::findOrFail($request->package);
         $validate = $request->validate([
             'package' => 'required|exists:packages,id',
@@ -45,34 +50,29 @@ class OrderController extends Controller
         $validate['total'] = (int) $request->total;
         $validate['package'] = $package->id;
 
-        $order = Order::create([
-            'user_id' => Auth::id(),
-            'package_id' => $validate['package'],
-            'installation_fee' => $validate['fee'],
-            'total' => $validate['total'],
-            'latitude' => $validate['latitude'],
-            'longitude' => $validate['longitude'],
-            'order_date' => now(),
-            'order_status' => 'unpaid'
-        ]);
-
-        $code = substr(hash_hmac('sha256', json_encode([
-            'name' => $order->user->name,
-            'email' => $order->user->email,
-            'total' => $order->total,
-            'order_date' => $order->order_date
-        ]), config('app.key')), 0, 16);
-
-        $order->update([
-            'code' => 'ORD-' . strtoupper($code)
-        ]);
-
-        Config::$serverKey = config('midtrans.serverKey');
-        Config::$isProduction = config('midtrans.isProduction');
-        Config::$is3ds = config('midtrans.is3ds');
-        Config::$isSanitized = config('midtrans.isSanitized');
-
         try {
+            $order = Order::create([
+                'user_id' => Auth::id(),
+                'package_id' => $validate['package'],
+                'installation_fee' => $validate['fee'],
+                'total' => $validate['total'],
+                'latitude' => $validate['latitude'],
+                'longitude' => $validate['longitude'],
+                'order_date' => now(),
+                'order_status' => 'unpaid'
+            ]);
+
+            $code = substr(hash_hmac('sha256', json_encode([
+                'name' => $order->user->name,
+                'email' => $order->user->email,
+                'total' => $order->total,
+                'order_date' => $order->order_date
+            ]), config('app.key')), 0, 16);
+
+            $order->update([
+                'code' => 'ORD-' . strtoupper($code)
+            ]);
+
             $transaction = Snap::getSnapToken([
                 'transaction_details' => [
                     'order_id' => $order->code,
@@ -88,11 +88,11 @@ class OrderController extends Controller
                 'snap_token' => $transaction
             ]);
         } catch (\Exception $e) {
-            return back()->withErrors('Failed to make a order, please try again later.');
+            return back()->with('error', 'Failed to make a order, please try again later.');
         }
 
 
-        return view('user.orders.payment', compact('order', 'transaction'));
+        return redirect()->route('user.order.show', $order->code)->with('success', 'Success to make a order!');
     }
 
     public function showOrder($code)
