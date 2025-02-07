@@ -90,7 +90,7 @@
                                         {{ $order->installation_date ?? '-' }}
                                     </td>
                                     <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        IDR {{ number_format($order->total, 0, ',', '.') }}
+                                        IDR {{ number_format($order->total, 2, ',', '.') }}
                                     </td>
 
                                     <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">

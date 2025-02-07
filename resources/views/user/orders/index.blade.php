@@ -52,7 +52,7 @@
                                     <div class="mt-4 flex items-center gap-2">
                                         <p
                                             class="text-sm font-medium text-gray-500 dark:text-gray-400 dark:hover:text-white">
-                                            IDR {{ number_format($package->price, 0, ',', '.') }} /
+                                            IDR {{ number_format($package->price, 2, ',', '.') }} /
                                             {{ $package->duration == 12 ? 'Year' : 'Month' }}
                                         </p>
                                     </div>
