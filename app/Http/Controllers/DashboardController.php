@@ -25,11 +25,23 @@ class DashboardController extends Controller
             ->paginate(10)
             ->withQueryString();
 
+        // total revenue every month
+        $revenues = Order::selectRaw("DATE_FORMAT(order_date, '%M') as month, SUM(total) as revenue")
+            ->where('order_status', 'completed')
+            ->groupBy('month')
+            ->orderByRaw("STR_TO_DATE(month, '%M')")
+            ->pluck('revenue', 'month');
+
+        $labels = $revenues->keys();
+        $revenues = $revenues->values();
+
         $dashboard = [
             'totalUser' => $totalUser,
             'totalOrder' => $totalOrder,
             'totalRevenue' => $totalRevenue,
-            'paidOrders' => $paidOrders
+            'paidOrders' => $paidOrders,
+            'labels' => $labels,
+            'revenues' => $revenues
         ];
 
         return view('admin.dashboard', compact('dashboard'));

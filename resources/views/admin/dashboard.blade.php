@@ -45,6 +45,16 @@
                 @include('admin._table', ['orders' => $dashboard['paidOrders']])
                 {{-- End table --}}
             </div>
+
+            <div class="mt-6 bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Total Revenue Every Month</h3>
+                {{-- Start chart --}}
+                @include('admin._revenue-chart', [
+                    'key' => $dashboard['labels'],
+                    'value' => $dashboard['revenues'],
+                ])
+                {{-- End chart --}}
+            </div>
         </div>
     </section>
 @endsection
