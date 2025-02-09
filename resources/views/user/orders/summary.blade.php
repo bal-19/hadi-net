@@ -102,22 +102,36 @@
                     </div>
 
                     <div class="sm:flex sm:items-center">
-                        <button type="button" id="cancel-button"
-                            class="mt-4 mx-1 flex w-full items-center justify-center rounded-lg border border-red-700 px-5 py-2.5 text-sm font-medium text-red-700 duration-300 transition-all hover:bg-red-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-red-300  dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900 sm:mt-0">Cancel
-                            Order</button>
-                        <button type="button" id="pay-button"
-                            class="mt-4 mx-1 flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white duration-300 transition-all hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:mt-0">Proceed
-                            to Payment</button>
+                        <form action="{{ route('user.order.cancel', $order) }}" method="POST"
+                            class="flex w-full items-center justify-center">
+                            @csrf
+                            <button type="button" id="cancel-button"
+                                class="w-full items-center justify-center rounded-lg border border-red-700 px-5 py-2.5 text-sm font-medium text-red-700 duration-300 transition-all hover:bg-red-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-red-300  dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900 sm:mt-0">Cancel
+                                Order</button>
+                            <button type="button" id="pay-button"
+                                class="mt-4 mx-1 flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white duration-300 transition-all hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:mt-0">Proceed
+                                to Payment</button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.clientKey') }}">
-    </script>
     <script>
         document.getElementById('pay-button').onclick = function() {
-            snap.pay('{{ $order->code }}');
-        };
+            let payButton = document.getElementById('pay-button');
+            payButton.disabled = true;
+
+            snap.pay('{{ $order->snap_token }}', {
+                onSuccess: function(result) {
+                    payButton.disabled = false;
+                },
+                onPending: function(result) {
+                    payButton.disabled = false;
+                },
+                onError: function(result) {
+                    payButton.disabled = false;
+                }
+            });
+        }
     </script>
 @endsection

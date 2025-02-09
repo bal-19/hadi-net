@@ -4,8 +4,6 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PackageController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\SummaryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +17,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/order', [OrderController::class, 'showOrderForm'])->name('user.order.index');
     Route::post('/order', [OrderController::class, 'createOrder'])->name('user.order.store');
     Route::get('/order/history', [OrderController::class, 'historyOrder'])->name('user.order.history');
+    Route::post('/order/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('user.order.cancel');
     Route::get('/order/{code}', [OrderController::class, 'showOrder'])->name('user.order.show');
 });
 

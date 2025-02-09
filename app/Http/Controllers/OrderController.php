@@ -63,6 +63,7 @@ class OrderController extends Controller
             ]);
 
             $code = substr(hash_hmac('sha256', json_encode([
+                'order_id' => $order->id,
                 'name' => $order->user->name,
                 'email' => $order->user->email,
                 'total' => $order->total,
@@ -78,7 +79,7 @@ class OrderController extends Controller
                     'order_id' => $order->code,
                     'gross_amount' => $order->total,
                 ],
-                'cutomer_details' => [
+                'customer_details' => [
                     'first_name' => $order->user->name,
                     'email' => $order->user->email,
                     'phone' => $order->user->phone_number
@@ -97,7 +98,7 @@ class OrderController extends Controller
 
     public function showOrder($code)
     {
-        $order = Order::with('user')->where('code', $code)->first();
+        $order = Order::with('user')->where('code', $code)->firstOrFail();
         return view('user.orders.summary', compact('order'));
     }
 
@@ -107,5 +108,22 @@ class OrderController extends Controller
         $orders = Order::where('user_id', 'like', $user_id)->filter($request->only('search'))->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
 
         return view('user.orders.history', compact('orders'));
+    }
+
+    public function cancelOrder(Order $order)
+    {
+        if ($order->user_id !== Auth::id()) {
+            return redirect()->route('user.order.history')->with('error', 'You have no acces to this order!');
+        }
+
+        if (in_array($order->order_status, ['expired', 'paid', 'failed', 'processing', 'completed', 'cancelled'])) {
+            return redirect()->route('user.order.history')->with('error', 'Pesanan tidak dapat dibatalkan karena sudah dalam proses pengiriman.');
+        }
+
+        $order->update([
+            'order_status' => 'cancelled'
+        ]);
+
+        return redirect()->route('user.order.history')->with('success', 'Order cancelled successfully!');
     }
 }
