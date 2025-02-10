@@ -21,12 +21,12 @@ class RoleSession
         $user = Auth::user();
 
         if (!$user) {
-            return redirect()->route('login')->with('error', 'Please login first.');
+            abort(404);
         }
 
         $role = $user->role;
 
-        if ($request->is('admin/*') && $role == 'user') {
+        if ($request->is('admin/*') && $role == 'user' && !$user) {
             abort(404);
         }
 
