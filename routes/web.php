@@ -17,8 +17,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/order', [OrderController::class, 'showOrderForm'])->name('user.order.index');
     Route::post('/order', [OrderController::class, 'createOrder'])->name('user.order.store');
     Route::get('/order/history', [OrderController::class, 'historyOrder'])->name('user.order.history');
-    Route::post('/order/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('user.order.cancel');
-    Route::get('/order/{code}', [OrderController::class, 'showOrder'])->name('user.order.show');
+    Route::post('/order/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('user.order.cancel')->middleware('auth.order');;
+    Route::get('/order/{order}', [OrderController::class, 'showOrder'])->name('user.order.show')->middleware('auth.order');
 });
 
 

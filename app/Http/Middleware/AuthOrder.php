@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthOrder
@@ -15,6 +16,11 @@ class AuthOrder
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return $next($request);
+        $order = $request->route('order');
+        if ($order->user_id == Auth::id()) {
+            return $next($request);
+        }
+
+        abort(404);
     }
 }
