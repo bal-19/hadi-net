@@ -105,7 +105,7 @@
                         <form action="{{ route('user.order.cancel', $order) }}" method="POST"
                             class="flex w-full items-center justify-center">
                             @csrf
-                            <button type="button" id="cancel-button"
+                            <button type="submit" id="cancel-button"
                                 class="w-full items-center justify-center rounded-lg border border-red-700 px-5 py-2.5 text-sm font-medium text-red-700 duration-300 transition-all hover:bg-red-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-red-300  dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900 sm:mt-0">Cancel
                                 Order</button>
                             <button type="button" id="pay-button"
