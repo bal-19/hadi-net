@@ -39,22 +39,21 @@
                 </div>
             </div>
 
+            {{-- Start table --}}
             <div class="mt-6 bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Waiting to be processed</h3>
-                {{-- Start table --}}
                 @include('admin._table', ['orders' => $dashboard['paidOrders']])
-                {{-- End table --}}
             </div>
+            {{-- End table --}}
 
+            {{-- Start chart --}}
             <div class="mt-6 bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Total Revenue Every Month</h3>
-                {{-- Start chart --}}
                 @include('admin._revenue-chart', [
-                    'key' => $dashboard['labels'],
-                    'value' => $dashboard['revenues'],
+                    'revenues' => $dashboard['revenues'],
+                    'years' => $dashboard['years'],
+                    'selectedYear' => $dashboard['selectedYear'],
                 ])
-                {{-- End chart --}}
             </div>
+            {{-- End chart --}}
         </div>
     </section>
 @endsection

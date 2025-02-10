@@ -1,6 +1,9 @@
+<h3 class="text-lg font-medium text-gray-900 pb-3 border-b dark:border-gray-700 dark:text-white mb-3">
+    Waiting to
+    be processed</h3>
 <!-- Start block -->
 <div
-    class="flex flex-col md:flex-row items-stretch md:items-center md:space-x-3 space-y-3 md:space-y-0 justify-between mx-4 py-4 border-t dark:border-gray-700">
+    class="flex flex-col md:flex-row items-stretch md:items-center md:space-x-3 space-y-3 md:space-y-0 justify-between mx-4 py-4">
     <div class="w-full md:w-1/2">
         <form class="max-w-md mx-auto">
             <label for="default-search"
