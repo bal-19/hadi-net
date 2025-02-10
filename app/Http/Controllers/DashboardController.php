@@ -14,10 +14,19 @@ class DashboardController extends Controller
         $currentMonth = Carbon::now()->month;
         $currentYear = Carbon::now()->year;
 
+        // get all order year from database
+        $years = Order::selectRaw("YEAR(order_date) as year")
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->pluck('year');
+
+        // get selected year from dashboard
+        $selectedYear = $request->get('year', $currentYear);
+
         $totalUser = User::count();
         $totalOrder = Order::count();
-        $totalRevenue = Order::where('order_status', 'completed')
-            ->whereYear('order_date', $currentYear)
+        $totalRevenue = Order::whereYear('order_date', $selectedYear)
+            ->where('order_status', 'completed')
             ->sum('total');
 
         // total order has paid status;
@@ -27,14 +36,6 @@ class DashboardController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        // get all order year from database
-        $years = Order::selectRaw("YEAR(order_date) as year")
-            ->distinct()
-            ->orderBy('year', 'desc')
-            ->pluck('year');
-
-        // get selected year from dashboard
-        $selectedYear = $request->get('year', $currentYear);
 
         // total revenue every month
         $revenues = Order::selectRaw("DATE_FORMAT(order_date, '%M') as month, SUM(total) as revenue")
