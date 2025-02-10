@@ -95,7 +95,7 @@
 
                                     <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="flex space-x-4">
-                                            <a href="{{ route('user.order.show', $order->code) }}"
+                                            <a href="{{ route('user.order.show', $order) }}"
                                                 class="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-primary-700 rounded-lg transition-all duration-200 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
                                                     class="h-4 w-4 mr-2 -ml-0.5" fill="currentColor" aria-hidden="true">
