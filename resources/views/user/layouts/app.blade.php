@@ -8,12 +8,6 @@
 
     {{-- Vite --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <!-- FontAwesome CDN -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    {{-- AlpineJs --}}
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    {{-- Sweet Alert --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     {{-- Midtrans --}}
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.clientKey') }}">
     </script>
@@ -76,81 +70,6 @@
     </footer>
     {{-- End Footer --}}
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        // swall fire
-        document.querySelectorAll('.delete-confirm').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.closest('form').submit();
-                    }
-                });
-            });
-        });
-
-        // cancel order
-        document.querySelectorAll('#cancel-button').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, cancel order!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.closest('form').submit();
-                    }
-                });
-            });
-        });
-
-        // loading effect
-        $(document).ready(function() {
-
-            $(window).on("beforeunload", function() {
-                $("#loading").removeClass("hidden");
-            });
-
-            // when submit form
-            $('form').on('submit', function() {
-                $('#loading').removeClass('hidden');
-            });
-
-            // when a element clicked
-            $('a').on('click', function(event) {
-                if ($(this).attr('target') !== '_blank' && $(this).attr('href') !== '#') {
-                    $('#loading').removeClass('hidden');
-                };
-            });
-
-            // when ajax request running
-            $(document).ajaxStart(function() {
-                $('#loading').removeClass('hidden');
-            }).ajaxStop(function() {
-                $('#loading').addClass('hidden');
-            });
-
-            // when page loaded
-            $(window).on("load", function() {
-                $("#loading").addClass("hidden");
-            });
-
-        });
-    </script>
 </body>
 
 </html>

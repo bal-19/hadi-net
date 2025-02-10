@@ -8,17 +8,6 @@
 
     {{-- Vite --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <!-- FontAwesome CDN -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    {{-- AlpineJs --}}
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    {{-- Sweet Alert --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    {{-- Leaflet --}}
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <title>@yield('title') | SenoNet</title>
 </head>
@@ -58,60 +47,6 @@
         @yield('content')
     </main>
     {{-- End Main --}}
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        // swall fire
-        document.querySelectorAll('.delete-confirm').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.closest('form').submit();
-                    }
-                });
-            });
-        });
-
-        // loading effect
-        $(document).ready(function() {
-            $(window).on("beforeunload", function() {
-                $("#loading").removeClass("hidden");
-            });
-
-            // when submit form
-            $('form').on('submit', function() {
-                $('#loading').removeClass('hidden');
-            });
-
-            // when a element clicked
-            $('a').on('click', function(event) {
-                if ($(this).attr('target') !== '_blank' && $(this).attr('href') !== '#') {
-                    $('#loading').removeClass('hidden');
-                };
-            });
-
-            // when ajax request running
-            $(document).ajaxStart(function() {
-                $('#loading').removeClass('hidden');
-            }).ajaxStop(function() {
-                $('#loading').addClass('hidden');
-            });
-
-            // when page loaded
-            $(window).on("load", function() {
-                $("#loading").addClass("hidden");
-            });
-        });
-    </script>
 </body>
 
 </html>
