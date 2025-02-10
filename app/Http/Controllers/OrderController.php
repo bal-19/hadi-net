@@ -96,9 +96,8 @@ class OrderController extends Controller
         return redirect()->route('user.order.show', $order->code)->with('success', 'Success to make a order!');
     }
 
-    public function showOrder($code)
+    public function showOrder(Order $order)
     {
-        $order = Order::with('user')->where('code', $code)->firstOrFail();
         return view('user.orders.summary', compact('order'));
     }
 
@@ -112,12 +111,8 @@ class OrderController extends Controller
 
     public function cancelOrder(Order $order)
     {
-        if ($order->user_id !== Auth::id()) {
-            return redirect()->route('user.order.history')->with('error', 'You have no acces to this order!');
-        }
-
         if (in_array($order->order_status, ['expired', 'paid', 'failed', 'processing', 'completed', 'cancelled'])) {
-            return redirect()->route('user.order.history')->with('error', 'Pesanan tidak dapat dibatalkan karena sudah dalam proses pengiriman.');
+            return redirect()->route('user.order.history')->with('error', 'Orders cannot be cancelled as they are already in the shipping process.');
         }
 
         $order->update([
