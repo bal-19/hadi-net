@@ -14,7 +14,6 @@ return Application::configure(basePath: dirname(__DIR__))
         //
         $middleware->alias([
             'role.session' => \App\Http\Middleware\RoleSession::class,
-            'logged' => \App\Http\Middleware\SessionMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
