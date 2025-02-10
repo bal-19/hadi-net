@@ -16,7 +16,9 @@ class DashboardController extends Controller
 
         $totalUser = User::count();
         $totalOrder = Order::count();
-        $totalRevenue = Order::where('order_status', 'completed')->sum('total');
+        $totalRevenue = Order::where('order_status', 'completed')
+            ->whereYear('order_date', $currentYear)
+            ->sum('total');
 
         // total order has paid status;
         $paidOrders = Order::where('order_status', 'paid')
@@ -25,23 +27,31 @@ class DashboardController extends Controller
             ->paginate(10)
             ->withQueryString();
 
+        // get all order year from database
+        $years = Order::selectRaw("YEAR(order_date) as year")
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->pluck('year');
+
+        // get selected year from dashboard
+        $selectedYear = $request->get('year', $currentYear);
+
         // total revenue every month
         $revenues = Order::selectRaw("DATE_FORMAT(order_date, '%M') as month, SUM(total) as revenue")
+            ->whereYear('order_date', $selectedYear)
             ->where('order_status', 'completed')
             ->groupBy('month')
             ->orderByRaw("STR_TO_DATE(month, '%M')")
-            ->pluck('revenue', 'month');
-
-        $labels = $revenues->keys();
-        $revenues = $revenues->values();
+            ->get();
 
         $dashboard = [
             'totalUser' => $totalUser,
             'totalOrder' => $totalOrder,
             'totalRevenue' => $totalRevenue,
             'paidOrders' => $paidOrders,
-            'labels' => $labels,
-            'revenues' => $revenues
+            'revenues' => $revenues,
+            'years' => $years,
+            'selectedYear' => $selectedYear
         ];
 
         return view('admin.dashboard', compact('dashboard'));
