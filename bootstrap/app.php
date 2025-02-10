@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         //
         $middleware->alias([
             'role.session' => \App\Http\Middleware\RoleSession::class,
+            'auth.order' => \App\Http\Middleware\AuthOrder::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
