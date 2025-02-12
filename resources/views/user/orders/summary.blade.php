@@ -138,31 +138,34 @@
             </div>
         </div>
     </section>
-    <script>
-        function printReceipt() {
-            var printContent = document.getElementById("print-area").innerHTML;
-            var originalContent = document.body.innerHTML;
 
-            document.body.innerHTML = printContent;
-            window.print();
-            document.body.innerHTML = originalContent;
-        }
+    @push('script')
+        <script>
+            function printReceipt() {
+                var printContent = document.getElementById("print-area").innerHTML;
+                var originalContent = document.body.innerHTML;
 
-        document.getElementById('pay-button').onclick = function() {
-            let payButton = document.getElementById('pay-button');
-            payButton.disabled = true;
+                document.body.innerHTML = printContent;
+                window.print();
+                document.body.innerHTML = originalContent;
+            }
 
-            snap.pay('{{ $order->snap_token }}', {
-                onSuccess: function(result) {
-                    payButton.disabled = false;
-                },
-                onPending: function(result) {
-                    payButton.disabled = false;
-                },
-                onError: function(result) {
-                    payButton.disabled = false;
-                }
-            });
-        }
-    </script>
+            document.getElementById('pay-button').onclick = function() {
+                let payButton = document.getElementById('pay-button');
+                payButton.disabled = true;
+
+                snap.pay('{{ $order->snap_token }}', {
+                    onSuccess: function(result) {
+                        payButton.disabled = false;
+                    },
+                    onPending: function(result) {
+                        payButton.disabled = false;
+                    },
+                    onError: function(result) {
+                        payButton.disabled = false;
+                    }
+                });
+            }
+        </script>
+    @endpush
 @endsection

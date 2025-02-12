@@ -70,6 +70,7 @@
     </footer>
     {{-- End Footer --}}
 
+    @stack('script')
 </body>
 
 </html>

@@ -72,6 +72,8 @@
         @yield('content')
     </main>
     {{-- End Main --}}
+
+    @stack('script')
 </body>
 
 </html>

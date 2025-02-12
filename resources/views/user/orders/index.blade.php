@@ -97,55 +97,57 @@
         </form>
     </section>
 
-    <script>
-        // Total scripts
-        document.addEventListener("DOMContentLoaded", function() {
-            const packageInputs = document.querySelectorAll(".package-input");
-            const subtotalElement = document.getElementById("subtotal");
-            const installationFeeElement = document.getElementById("fee");
-            const totalElement = document.getElementById("total");
+    @push('script')
+        <script>
+            // Total scripts
+            document.addEventListener("DOMContentLoaded", function() {
+                const packageInputs = document.querySelectorAll(".package-input");
+                const subtotalElement = document.getElementById("subtotal");
+                const installationFeeElement = document.getElementById("fee");
+                const totalElement = document.getElementById("total");
 
-            packageInputs.forEach(input => {
-                input.addEventListener("change", function() {
-                    let price = parseFloat(this.dataset.price);
+                packageInputs.forEach(input => {
+                    input.addEventListener("change", function() {
+                        let price = parseFloat(this.dataset.price);
 
-                    let installationFee = price * 0.2;
-                    let total = price + installationFee;
+                        let installationFee = price * 0.2;
+                        let total = price + installationFee;
 
-                    // Input
-                    document.querySelector('input[name="fee"]').value = installationFee;
-                    document.querySelector('input[name="total"]').value = total;
+                        // Input
+                        document.querySelector('input[name="fee"]').value = installationFee;
+                        document.querySelector('input[name="total"]').value = total;
 
-                    // Text
-                    subtotalElement.textContent = `IDR ${price.toLocaleString("id-ID")}`;
-                    installationFeeElement.textContent =
-                        `IDR ${installationFee.toLocaleString("id-ID")}`;
-                    totalElement.textContent = `IDR ${total.toLocaleString("id-ID")}`;
+                        // Text
+                        subtotalElement.textContent = `IDR ${price.toLocaleString("id-ID")}`;
+                        installationFeeElement.textContent =
+                            `IDR ${installationFee.toLocaleString("id-ID")}`;
+                        totalElement.textContent = `IDR ${total.toLocaleString("id-ID")}`;
+                    });
                 });
             });
-        });
 
-        // Leaflet scripts
-        document.addEventListener('DOMContentLoaded', function() {
-            var defaultLocation = [-7.867100, 112.523903];
+            // Leaflet scripts
+            document.addEventListener('DOMContentLoaded', function() {
+                var defaultLocation = [-7.867100, 112.523903];
 
-            var map = L.map('map', {
-                center: defaultLocation,
-                zoom: 15
+                var map = L.map('map', {
+                    center: defaultLocation,
+                    zoom: 15
+                });
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                document.getElementById('latitude').value = defaultLocation[0];
+                document.getElementById('longitude').value = defaultLocation[1];
+
+                map.on('move', function() {
+                    var center = map.getCenter();
+                    document.getElementById('latitude').value = center.lat;
+                    document.getElementById('longitude').value = center.lng;
+                });
             });
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            document.getElementById('latitude').value = defaultLocation[0];
-            document.getElementById('longitude').value = defaultLocation[1];
-
-            map.on('move', function() {
-                var center = map.getCenter();
-                document.getElementById('latitude').value = center.lat;
-                document.getElementById('longitude').value = center.lng;
-            });
-        });
-    </script>
+        </script>
+    @endpush
 @endsection

@@ -19,25 +19,27 @@
 {{-- chart --}}
 <canvas id="revenueChart"></canvas>
 
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function() {
-        var ctx = document.getElementById('revenueChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: @json($revenues->pluck('month')),
-                datasets: [{
-                    label: 'Total Revenue',
-                    data: @json($revenues->pluck('revenue')),
-                    fill: true,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
-                }]
-            }
-        });
+@push('script')
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            var ctx = document.getElementById('revenueChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: @json($revenues->pluck('month')),
+                    datasets: [{
+                        label: 'Total Revenue',
+                        data: @json($revenues->pluck('revenue')),
+                        fill: true,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                }
+            });
 
-        document.getElementById('year').addEventListener('change', function() {
-            document.getElementById('yearForm').submit();
+            document.getElementById('year').addEventListener('change', function() {
+                document.getElementById('yearForm').submit();
+            });
         });
-    });
-</script>
+    </script>
+@endpush
