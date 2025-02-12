@@ -38,11 +38,11 @@ class DashboardController extends Controller
 
 
         // total revenue every month
-        $revenues = Order::selectRaw("DATE_FORMAT(order_date, '%M') as month, SUM(total) as revenue")
+        $revenues = Order::selectRaw("MONTH(order_date) as month_number, DATE_FORMAT(order_date, '%M') as month, SUM(total) as revenue")
             ->whereYear('order_date', $selectedYear)
             ->where('order_status', 'completed')
-            ->groupBy('month')
-            ->orderByRaw("STR_TO_DATE(month, '%M')")
+            ->groupBy('month_number', 'month')
+            ->orderBy('month_number')
             ->get();
 
         $dashboard = [
