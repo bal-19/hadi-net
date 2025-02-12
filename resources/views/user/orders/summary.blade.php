@@ -23,7 +23,7 @@
                 </div>
             </div>
         @endif
-        <div id="print-area" class="bg-white p-12 mx-auto max-w-4xl dark:bg-gray-900">
+        <div id="print-area" class="bg-white p-12 mx-auto max-w-4xl rounded-md dark:bg-gray-900">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Order summary</h2>
                 @if ($order->order_status == 'unpaid')
