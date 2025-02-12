@@ -4,7 +4,7 @@
 
 @section('content')
     <section class="bg-slate-100 xl:ml-64 dark:bg-gray-900">
-        <div class="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+        <div class="bg-white p-12 mx-auto my-12 rounded-md max-w-2xl lg:py-16">
             <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
                 {{ isset($package) ? 'Edit Package' : 'Create Package' }}</h2>
             <form action="{{ isset($package) ? route('packages.update', $package) : route('packages.store') }}"
