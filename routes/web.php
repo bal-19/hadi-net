@@ -13,6 +13,11 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function () {
+    // settings
+    Route::get('/settings', function () {
+        return view('user.settings.index');
+    });
+
     // order
     Route::get('/order', [OrderController::class, 'showOrderForm'])->name('user.order.index');
     Route::post('/order', [OrderController::class, 'createOrder'])->name('user.order.store');
