@@ -20,7 +20,7 @@
     <title>@yield('title') | SenoNet</title>
 </head>
 
-<body class="bg-slate-100">
+<body class="bg-slate-100 dark:bg-slate-900">
     {{-- Start Loading Element --}}
     <div id="loading" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center"
         style="z-index: 1001">
