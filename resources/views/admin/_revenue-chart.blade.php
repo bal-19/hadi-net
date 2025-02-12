@@ -17,26 +17,90 @@
 </div>
 
 {{-- chart --}}
-<canvas id="revenueChart"></canvas>
+<div id="revenueChart" class="w-full mx-auto"></div>
 
 @push('script')
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", function() {
-            var ctx = document.getElementById('revenueChart').getContext('2d');
-            var chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: @json($revenues->pluck('month')),
-                    datasets: [{
-                        label: 'Total Revenue',
-                        data: @json($revenues->pluck('revenue')),
-                        fill: true,
-                        borderColor: 'rgb(75, 192, 192)',
-                        tension: 0.1
-                    }]
-                }
-            });
+            var options = {
+                chart: {
+                    height: "200%",
+                    maxWidth: "100%",
+                    type: "area",
+                    fontFamily: "Inter, sans-serif",
+                    dropShadow: {
+                        enabled: false,
+                    },
+                    toolbar: {
+                        show: false,
+                    },
+                },
+                tooltip: {
+                    enabled: true,
+                    x: {
+                        show: false,
+                    },
+                    y: {
+                        formatter: function(value) {
+                            return "IDR " + value.toLocaleString("id-ID");
+                        }
+                    }
+                },
+                fill: {
+                    type: "gradient",
+                    gradient: {
+                        opacityFrom: 0.55,
+                        opacityTo: 0,
+                        shade: "#1C64F2",
+                        gradientToColors: ["#1C64F2"],
+                    },
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                stroke: {
+                    width: 6,
+                },
+                grid: {
+                    show: false,
+                    strokeDashArray: 4,
+                    padding: {
+                        left: 2,
+                        right: 2,
+                        top: 0
+                    },
+                },
+                series: [{
+                    name: "Total Revenues",
+                    data: @json($revenues->pluck('revenue')),
+                    color: "#1A56DB",
+                }, ],
+                xaxis: {
+                    categories: @json($revenues->pluck('month')),
+                    labels: {
+                        show: true,
+                        style: {
+                            fontFamily: "Inter, sans-serif",
+                            cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+                        }
+                    },
+                    axisBorder: {
+                        show: false,
+                    },
+                    axisTicks: {
+                        show: false,
+                    },
+                },
+                yaxis: {
+                    show: false,
+                },
+            }
+            if (document.getElementById("revenueChart") && typeof ApexCharts !== 'undefined') {
+                var chart = new ApexCharts(document.getElementById("revenueChart"), options);
+                chart.render();
+            }
 
+            // submit form year
             document.getElementById('year').addEventListener('change', function() {
                 document.getElementById('yearForm').submit();
             });

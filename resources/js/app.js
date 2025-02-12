@@ -4,12 +4,12 @@ import "./swal-confirm";
 import "flowbite";
 import $ from "jquery";
 import Alpine from "alpinejs";
-import Chart from "chart.js/auto";
 import Swal from "sweetalert2";
 import Aos from "aos";
+import ApexCharts from "apexcharts";
 
 window.Alpine = Alpine;
-window.Chart = Chart;
+window.ApexCharts = ApexCharts;
 window.Swal = Swal;
 window.$ = $;
 
