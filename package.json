@@ -20,7 +20,7 @@
         "@material-tailwind/html": "^2.3.2",
         "alpinejs": "^3.14.8",
         "aos": "^2.3.4",
-        "chart.js": "^4.4.7",
+        "apexcharts": "^3.46.0",
         "jquery": "^3.7.1",
         "sweetalert2": "^11.16.0"
     }
