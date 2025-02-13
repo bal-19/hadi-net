@@ -43,7 +43,7 @@
                     <th scope="col" class="p-4">Name</th>
                     <th scope="col" class="p-4">Role</th>
                     <th scope="col" class="p-4">Gender</th>
-                    <th scope="col" class="p-4">Age</th>
+                    <th scope="col" class="p-4">Born Date</th>
                     <th scope="col" class="p-4">Address</th>
                     <th scope="col" class="p-4">Phone Number</th>
                     <th scope="col" class="p-4">Email</th>
