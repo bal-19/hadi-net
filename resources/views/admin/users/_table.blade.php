@@ -103,7 +103,7 @@
 
                         </td>
                         <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $user->age }}
+                            {{ $user->born_date }}
                         </td>
                         <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $user->address }}</td>

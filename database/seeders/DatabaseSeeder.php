@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
                     "role" => $faker->randomElement(['super admin', 'admin', 'technician', 'user']),
                     "name" => $faker->name,
                     "gender" => $faker->randomElement(['male', 'female', 'other']),
-                    "age" => rand(17, 40),
+                    "born_date" => $faker->dateTimeBetween('-100 years', '-18 years')->format('Y-m-d'),
                     "address" => $faker->address,
                     "phone_number" => $faker->phoneNumber,
                     "email" => $faker->unique()->safeEmail,
