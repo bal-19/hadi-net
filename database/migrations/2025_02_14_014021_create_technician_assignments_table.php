@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('packages', function (Blueprint $table) {
+        Schema::create('technician_assignments', function (Blueprint $table) {
             $table->id();
-            $table->enum('service_type', ['prabayar', 'pascabayar']);
-            $table->string('name');
-            $table->integer('bandwidth');
-            $table->integer('duration');
-            $table->decimal('price', 12, 2);
-            $table->longText('desc');
+            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
+            $table->foreignId('technician_id')->constrained('users')->onDelete('cascade');
+            $table->enum('assignment_status', ['assigned', 'in_progress', 'completed'])->default('assigned');
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('packages');
+        Schema::dropIfExists('technician_assignments');
     }
 };

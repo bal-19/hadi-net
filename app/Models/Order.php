@@ -10,20 +10,11 @@ class Order extends Model
     protected $fillable = [
         'code',
         'user_id',
-        'technician_id',
         'package_id',
-        'installation_fee',
-        'total',
         'latitude',
         'longitude',
-        'order_date',
-        'order_status',
-        'installation_date',
-        'snap_token'
-    ];
-
-    protected $hidden = [
-        'snap_token'
+        'status',
+        'installation_date'
     ];
 
     public function getRouteKeyName()
@@ -31,14 +22,19 @@ class Order extends Model
         return 'code';
     }
 
+    public function technicianAssignment()
+    {
+        return $this->hasOne(TechnicianAssignment::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function technician()
-    {
-        return $this->belongsTo(User::class, 'technician_id')->where('role', 'Technician');
     }
 
     public function package()
