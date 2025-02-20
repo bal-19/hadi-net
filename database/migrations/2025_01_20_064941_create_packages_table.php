@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
+            $table->string('code', 20)->unique()->nullable();
             $table->enum('service_type', ['prabayar', 'pascabayar']);
             $table->string('name');
             $table->integer('bandwidth');
