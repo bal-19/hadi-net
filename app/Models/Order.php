@@ -11,6 +11,7 @@ class Order extends Model
         'code',
         'user_id',
         'package_id',
+        'wifi_type',
         'latitude',
         'longitude',
         'status',

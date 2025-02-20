@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('code', 20)->unique()->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('package_id')->constrained('packages')->onDelete('cascade');
+            $table->enum('wifi_type', ['prabayar', 'pascabayar']);
             $table->string('latitude');
             $table->string('longitude');
             $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending');
