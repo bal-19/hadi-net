@@ -13,6 +13,12 @@ use Midtrans\Snap;
 
 class OrderController extends Controller
 {
+    public function destroy(Order $order)
+    {
+        $order->delete();
+        return redirect()->route('orders.index')->with('success', 'Order deleted succesfully!');
+    }
+
     public function index(Request $request)
     {
         $orders = Order::filter($request->only('search'))
