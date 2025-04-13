@@ -44,13 +44,14 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'gender' => 'required|in:male,female,other',
-            'born_date' => 'required|date|before:18 years ago',
+            'born_date' => 'required|date|date_format:Y-m-d|before:18 years ago',
             'phone_number' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8|confirmed',
             'address' => 'required'
         ], [
             'password.confirmed' => 'Password confirmation does not match.',
+            'born_date.before' => 'Registration is only permitted for those aged 18 years and above.'
         ]);
 
         if ($validator->fails()) {
@@ -63,7 +64,7 @@ class AuthController extends Controller
             'role' => 'user',
             'name' => $request->name,
             'gender' => $request->gender,
-            'age' => $request->age,
+            'born_date' => $request->born_date,
             'phone_number' => $request->phone_number,
             'email' => $request->email,
             'password' => Hash::make($request->password),
