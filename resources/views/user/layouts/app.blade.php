@@ -8,9 +8,6 @@
 
     {{-- Vite --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    {{-- Midtrans --}}
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.clientKey') }}">
-    </script>
     {{-- Leaflet --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -46,19 +43,35 @@
 
     {{-- Start Main --}}
     <main class="min-h-screen">
-        @if (session('success'))
-            <script>
-                Swal.fire('Success', "{{ session('success') }}", 'success');
-            </script>
-        @elseif (session('error'))
-            <script>
-                Swal.fire('Error', "{{ session('error') }}", 'error')
-            </script>
-        @elseif (session('warning'))
-            <script>
-                Swal.fire('Warning', "{{ session('warning') }}", 'warning')
-            </script>
-        @endif
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                @if (session('success'))
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: @json(session('success')),
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    })
+                @elseif (session('warning'))
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Warning!',
+                        text: @json(session('warning')),
+                        confirmButtonColor: '#f1c40f',
+                        confirmButtonText: 'Got it!'
+                    })
+                @elseif (session('error'))
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: @json(session('error')),
+                        confirmButtonColor: '#e74c3c',
+                        confirmButtonText: 'Close'
+                    })
+                @endif
+            });
+        </script>
 
         @yield('content')
     </main>

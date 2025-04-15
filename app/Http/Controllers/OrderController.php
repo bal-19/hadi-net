@@ -2,32 +2,92 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderComplete;
+use App\Mail\PaymentConfirmed;
 use App\Models\Order;
 use App\Models\Package;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Midtrans\Config;
 use Midtrans\Snap;
 
 class OrderController extends Controller
 {
+    public function update(Request $request, Order $order)
+    {
+        if (Auth::user()->role != 'super admin') {
+            abort(404);
+        }
+
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'technician_id' => 'nullable|exists:users,id',
+            'package_id' => 'required|exists:packages,id',
+            'installation_fee' => 'required|numeric|min:0',
+            'total' => 'required|numeric|min:0',
+            'latitude' => 'required|string',
+            'longitude' => 'required|string',
+            'order_date' => 'required|date',
+            'installation_date' => 'nullable|date',
+            'expired_date' => 'nullable|date',
+            'order_status' => 'required|in:expired,unpaid,paid,processing,hold,completed,cancelled',
+        ]);
+
+        $order->update($validated);
+
+        return redirect()->route('orders.index')->with('success', 'Order updated successfully.');
+    }
+
+    public function edit(Order $order)
+    {
+        if (Auth::user()->role != 'super admin') {
+            abort(404);
+        }
+
+        $users = User::where('role', 'user')->get();
+        $technicians = User::where('role', 'technician')->get();
+        $packages = Package::all();
+
+        return view('admin.orders.form-order', compact('order', 'users', 'technicians', 'packages'));
+    }
+
     public function destroy(Order $order)
     {
+        if (Auth::user()->role != 'super admin') {
+            abort(404);
+        }
+
         $order->delete();
         return redirect()->route('orders.index')->with('success', 'Order deleted succesfully!');
     }
 
     public function index(Request $request)
     {
-        $orders = Order::filter($request->only('search'))
-            ->with('user', 'package')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10)
-            ->withQueryString();
+        if (Auth::user()->role === 'technician') {
+            $orders = Order::filter($request->only('search'))
+                ->where('technician_id', Auth::id())
+                ->where('order_status', 'processing')
+                ->with('user', 'package')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10)
+                ->withQueryString();
+        } else {
+            $orders = Order::filter($request->only('search'))
+                ->with('user', 'package')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10)
+                ->withQueryString();
+        }
 
-        return view('admin.orders.index', compact('orders'));
+        $technicians = User::where('role', 'technician')->get();
+
+        return view('admin.orders.index', compact('orders', 'technicians'));
     }
 
     public function showOrderForm()
@@ -38,11 +98,6 @@ class OrderController extends Controller
 
     public function createOrder(Request $request)
     {
-        Config::$serverKey = config('midtrans.serverKey');
-        Config::$isProduction = config('midtrans.isProduction');
-        Config::$is3ds = config('midtrans.is3ds');
-        Config::$isSanitized = config('midtrans.isSanitized');
-
         $package = Package::findOrFail($request->package);
         $validate = $request->validate([
             'package' => 'required|exists:packages,id',
@@ -79,21 +134,6 @@ class OrderController extends Controller
             $order->update([
                 'code' => 'ORD-' . strtoupper($code)
             ]);
-
-            $transaction = Snap::getSnapToken([
-                'transaction_details' => [
-                    'order_id' => $order->code,
-                    'gross_amount' => $order->total,
-                ],
-                'customer_details' => [
-                    'first_name' => $order->user->name,
-                    'email' => $order->user->email,
-                    'phone' => $order->user->phone_number
-                ]
-            ]);
-            $order->update([
-                'snap_token' => $transaction
-            ]);
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to make a order, please try again later.');
         }
@@ -126,5 +166,83 @@ class OrderController extends Controller
         ]);
 
         return redirect()->route('user.order.history')->with('success', 'Order cancelled successfully!');
+    }
+
+    public function uploadPaymentProof(Request $request, Order $order)
+    {
+        $request->validate([
+            'payment_proof' => 'required|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
+        ]);
+
+        if ($request->hasFile('payment_proof')) {
+            $path = $request->file('payment_proof')->store('proofs', 'public');
+
+            $order->payment_proof = $path;
+            $order->order_status = 'paid';
+            $order->save();
+
+            return redirect()->route('user.order.show', $order)
+                ->with('success', 'Order successfully paid!');
+        }
+
+        return redirect()->back()->with('error', 'No payment proof uploaded.');
+    }
+
+    public function assignTechnician(Request $request, $id)
+    {
+        $request->validate([
+            'technician_id' => 'required|exists:users,id',
+            'installation_date' => 'required|date'
+        ]);
+
+        $order = Order::findOrFail($id);
+        $order->technician_id = $request->technician_id;
+        $order->installation_date = $request->installation_date;
+        $order->save();
+
+        return redirect()->back()->with('success', 'Technician successfully assigned!');
+    }
+
+    public function confirmPayment($id)
+    {
+        $order = Order::findOrFail($id);
+
+        $order->order_status = 'processing';
+        $order->save();
+
+        Mail::to($order->user->email)->send(new PaymentConfirmed($order));
+
+        return redirect()->back()->with('success', 'Pembayaran telah dikonfirmasi dan email telah dikirim.');
+    }
+
+    public function approveInstallation(Order $order)
+    {
+        $order->order_status = 'completed';
+        $order->expired_date = Carbon::now('Asia/Jakarta');
+        $order->save();
+
+        Mail::to($order->user->email)->send(new OrderComplete($order));
+
+
+        return redirect()->back()->with('success', 'Installation has been approved.');
+    }
+
+    public function uploadInstallationProof(Request $request, Order $order)
+    {
+        $request->validate([
+            'installation_proof' => 'required|image|mimes:png,jpg,jpeg|max:2048'
+        ]);
+
+        if ($request->hasFile('installation_proof')) {
+            if ($order->installation_proof) {
+                Storage::delete('public/' . $order->installation_proof);
+            }
+
+            $path = $request->file('installation_proof')->store('proofs', 'public');
+            $order->installation_proof = $path;
+            $order->save();
+        }
+
+        return redirect()->back()->with('success', 'Bukti instalasi berhasil diunggah.');
     }
 }

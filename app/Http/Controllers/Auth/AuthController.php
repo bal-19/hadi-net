@@ -73,7 +73,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect('/order')->with('success', 'Account created successfully!');
+        return redirect('/')->with('success', 'Account created successfully!');
     }
 
     public function logout(Request $request)

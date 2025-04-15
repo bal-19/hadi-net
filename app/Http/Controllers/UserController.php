@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -16,11 +17,19 @@ class UserController extends Controller
 
     public function create()
     {
+        if (Auth::user()->role != 'super admin') {
+            abort(404);
+        }
+
         return view('admin.users.form-user');
     }
 
     public function store(Request $request)
     {
+        if (Auth::user()->role != 'super admin') {
+            abort(404);
+        }
+
         $validated = $request->validate([
             'role' => 'required|in:super admin,admin,technician,user',
             'name' => 'required|string|max:255',
@@ -40,11 +49,19 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
+        if (Auth::user()->role != 'super admin') {
+            abort(404);
+        }
+
         return view('admin.users.form-user', compact('user'));
     }
 
     public function update(Request $request, User $user)
     {
+        if (Auth::user()->role != 'super admin') {
+            abort(404);
+        }
+
         $validate = $request->validate([
             'role' => 'required|in:super admin,admin,technician,user',
             'name' => 'required|string|max:255',
@@ -68,6 +85,10 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        if (Auth::user()->role != 'super admin') {
+            abort(404);
+        }
+
         $user->delete();
         return redirect()->route('users.index')->with('success', 'User deleted successfully');
     }

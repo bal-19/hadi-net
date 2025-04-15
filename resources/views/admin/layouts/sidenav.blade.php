@@ -3,7 +3,7 @@
         <img src="https://api.dicebear.com/7.x/initials/svg?seed={{ strtoupper(substr(auth()->user()->name, 0, 1)) }}"
             alt="Profile Picture" class="w-12 h-12 rounded-full dark:bg-gray-500">
         <div>
-            <a href="#" class="text-lg font-semibold hover:underline">{{ auth()->user()->name }}</a>
+            <p class="text-base font-semibold hover:underline">{{ auth()->user()->name }}</p>
             @if (auth()->user()->role == 'super admin')
                 <span
                     class="bg-gray-700 text-red-400 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-red-100 dark:text-red-800 border border-red-400">

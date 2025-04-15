@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/order/history', [OrderController::class, 'historyOrder'])->name('user.order.history');
     Route::post('/order/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('user.order.cancel')->middleware('auth.order');;
     Route::get('/order/{order}', [OrderController::class, 'showOrder'])->name('user.order.show')->middleware('auth.order');
+    Route::post('/order/{order}/upload-proof', [OrderController::class, 'uploadPaymentProof'])->name('user.order.uploadProof')->middleware('auth.order');
 });
 
 
@@ -37,6 +38,10 @@ Route::prefix('admin')->middleware(['role.session'])->group(function () {
     Route::resource('packages', PackageController::class);
     // Manage Orders Route
     Route::resource('orders', OrderController::class);
+    Route::post('/orders/{id}/assign-technician', [OrderController::class, 'assignTechnician'])->name('orders.assignTechnician');
+    Route::post('/orders/{id}/confirm-payment', [OrderController::class, 'confirmPayment'])->name('orders.confirmPayment');
+    Route::post('/orders/{order}/approve-installation', [OrderController::class, 'approveInstallation'])->name('orders.approveInstallation');
+    Route::post('/orders/{order}/upload-installation-proof', [OrderController::class, 'uploadInstallationProof'])->name('orders.uploadInstallationProof');
 });
 
 // Auth Route

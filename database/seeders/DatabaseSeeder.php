@@ -17,23 +17,21 @@ class DatabaseSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        for ($i = 0; $i < 20; $i++) {
-            // Users table
-            DB::table("users")->insert([
-                [
-                    "role" => $faker->randomElement(['super admin', 'admin', 'technician', 'user']),
-                    "name" => $faker->name,
-                    "gender" => $faker->randomElement(['male', 'female', 'other']),
-                    "born_date" => $faker->dateTimeBetween('-100 years', '-18 years')->format('Y-m-d'),
-                    "address" => $faker->address,
-                    "phone_number" => $faker->phoneNumber,
-                    "email" => $faker->unique()->safeEmail,
-                    "password" => Hash::make('password'),
-                    "created_at" => now(),
-                    "updated_at" => now()
-                ]
-            ]);
-        }
+        // Users table
+        DB::table("users")->insert([
+            [
+                "role" => 'super admin',
+                "name" => 'iqbal haidee',
+                "gender" => 'male',
+                "born_date" => $faker->dateTimeBetween('-100 years', '-18 years')->format('Y-m-d'),
+                "address" => $faker->address,
+                "phone_number" => $faker->phoneNumber,
+                "email" => 'iqbalhaidee@gmail.com',
+                "password" => Hash::make('password'),
+                "created_at" => now(),
+                "updated_at" => now()
+            ]
+        ]);
 
         // Packages table
         DB::table("packages")->insert([

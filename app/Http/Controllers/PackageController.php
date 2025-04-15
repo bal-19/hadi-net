@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Package;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PackageController extends Controller
 {
@@ -20,6 +21,10 @@ class PackageController extends Controller
 
     public function store(Request $request)
     {
+        if (Auth::user()->role != 'super admin') {
+            abort(404);
+        }
+
         $validate = $request->validate([
             'name' => 'required|string|max:255',
             'bandwidth' => 'required|integer',
@@ -35,11 +40,19 @@ class PackageController extends Controller
 
     public function edit(Package $package)
     {
+        if (Auth::user()->role != 'super admin') {
+            abort(404);
+        }
+
         return view('admin.packages.form-package', compact('package'));
     }
 
     public function update(Request $request, Package $package)
     {
+        if (Auth::user()->role != 'super admin') {
+            abort(404);
+        }
+
         $validate = $request->validate([
             'name' => 'required|string|max:255',
             'bandwidth' => 'required|integer',
@@ -55,6 +68,10 @@ class PackageController extends Controller
 
     public function destroy(Package $package)
     {
+        if (Auth::user()->role != 'super admin') {
+            abort(404);
+        }
+
         $package->delete();
 
         return redirect()->route('packages.index')->with('success', 'Package deleted successfully!');
