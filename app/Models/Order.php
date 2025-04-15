@@ -19,7 +19,7 @@ class Order extends Model
         'order_date',
         'order_status',
         'installation_date',
-        'snap_token'
+        'expired_date'
     ];
 
     protected $hidden = [

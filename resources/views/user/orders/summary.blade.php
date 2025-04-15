@@ -26,7 +26,7 @@
         <div id="print-area" class="bg-white p-12 mx-auto max-w-4xl rounded-md dark:bg-gray-900">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Order summary</h2>
-                @if ($order->order_status == 'unpaid')
+                @if ($order->order_status == 'unpaid' || $order->order_status == 'hold')
                     <span
                         class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-yellow-900 dark:text-yellow-300">
                         {{ ucwords($order->order_status) }}
@@ -66,7 +66,7 @@
                         {{ $order->technician->name ?? '-' }}
                     </dd>
                     <dd class="mt-1 text-base font-normal text-gray-500 dark:text-gray-400">Installation Date :
-                        {{ $order->installation_date ?? '-' }}
+                        {{ $order->installation_date ? \Carbon\Carbon::parse($order->installation_date)->setTimezone('Asia/Jakarta')->translatedFormat('l, d F Y H:i') : '-' }}
                     </dd>
                 </dl>
             </div>
@@ -121,7 +121,7 @@
                         </dl>
                     </div>
 
-                    @if ($order->order_status == 'unpaid')
+                    @if ($order->order_status == 'unpaid' || ($order->order_status == 'hold' && !isset($order->payment_proof)))
                         <div class="sm:flex sm:items-center">
                             <form action="{{ route('user.order.cancel', $order) }}" method="POST"
                                 class="flex w-full items-center justify-center">

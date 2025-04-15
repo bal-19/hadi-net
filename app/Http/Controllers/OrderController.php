@@ -39,6 +39,18 @@ class OrderController extends Controller
             'order_status' => 'required|in:expired,unpaid,paid,processing,hold,completed,cancelled',
         ]);
 
+        if ($request->filled('expired_date')) {
+            $validated['expired_date'] = Carbon::parse($request->expired_date)->format('Y-m-d H:i:s');
+        }
+
+        if ($request->filled('installation_date')) {
+            $validated['installation_date'] = Carbon::parse($request->installation_date)->format('Y-m-d H:i:s');
+        }
+
+        if ($request->filled('order_date')) {
+            $validated['order_date'] = Carbon::parse($request->order_date)->format('Y-m-d H:i:s');
+        }
+
         $order->update($validated);
 
         return redirect()->route('orders.index')->with('success', 'Order updated successfully.');
@@ -83,6 +95,19 @@ class OrderController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
                 ->withQueryString();
+        }
+
+        foreach ($orders as $order) {
+            if ($order->expired_date) {
+                $expired = Carbon::parse($order->expired_date)->setTimezone('Asia/Jakarta');
+                $now = Carbon::now('Asia/Jakarta');
+
+                if ($now->greaterThan($expired) && $order->order_status !== 'hold') {
+                    $order->order_status = 'hold';
+                    $order->payment_proof = null;
+                    $order->save();
+                }
+            }
         }
 
         $technicians = User::where('role', 'technician')->get();
@@ -150,10 +175,29 @@ class OrderController extends Controller
     public function historyOrder(Request $request)
     {
         $user_id = Auth::id();
-        $orders = Order::where('user_id', 'like', $user_id)->filter($request->only('search'))->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
+
+        $orders = Order::where('user_id', $user_id)
+            ->filter($request->only('search'))
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+
+        foreach ($orders as $order) {
+            if ($order->expired_date) {
+                $expired = Carbon::parse($order->expired_date)->setTimezone('Asia/Jakarta');
+                $now = Carbon::now('Asia/Jakarta');
+
+                if ($now->greaterThan($expired) && $order->order_status !== 'hold') {
+                    $order->order_status = 'hold';
+                    $order->payment_proof = null;
+                    $order->save();
+                }
+            }
+        }
 
         return view('user.orders.history', compact('orders'));
     }
+
 
     public function cancelOrder(Order $order)
     {
@@ -178,7 +222,10 @@ class OrderController extends Controller
             $path = $request->file('payment_proof')->store('proofs', 'public');
 
             $order->payment_proof = $path;
-            $order->order_status = 'paid';
+
+            if ($order->order_status == 'unpaid') {
+                $order->order_status = 'paid';
+            }
             $order->save();
 
             return redirect()->route('user.order.show', $order)
@@ -207,10 +254,16 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        $order->order_status = 'processing';
-        $order->save();
+        if ($order->order_status == 'paid') {
+            $order->order_status = 'processing';
+            $order->save();
+            Mail::to($order->user->email)->send(new PaymentConfirmed($order));
+        } elseif ($order->order_status == 'hold') {
+            $order->order_status = 'completed';
+            $order->expired_date = Carbon::now('Asia/Jakarta')->addMonth();
+            $order->save();
+        }
 
-        Mail::to($order->user->email)->send(new PaymentConfirmed($order));
 
         return redirect()->back()->with('success', 'Pembayaran telah dikonfirmasi dan email telah dikirim.');
     }
@@ -218,7 +271,7 @@ class OrderController extends Controller
     public function approveInstallation(Order $order)
     {
         $order->order_status = 'completed';
-        $order->expired_date = Carbon::now('Asia/Jakarta');
+        $order->expired_date = Carbon::now('Asia/Jakarta')->addMonth();
         $order->save();
 
         Mail::to($order->user->email)->send(new OrderComplete($order));

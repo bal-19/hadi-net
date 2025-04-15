@@ -63,15 +63,15 @@
                             {{ $order->package->name }}
                         </td>
                         <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $order->order_date }}
+                            {{ \Carbon\Carbon::parse($order->order_date)->setTimezone('Asia/Jakarta') }}
                         </td>
                         <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            @if ($order->order_status == 'unpaid')
+                            @if ($order->order_status == 'unpaid' || $order->order_status == 'hold')
                                 <span
                                     class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-yellow-900 dark:text-yellow-300">
                                     {{ ucwords($order->order_status) }}
                                 </span>
-                            @elseif ($order->order_status == 'processing' || $order->order_status == 'hold')
+                            @elseif ($order->order_status == 'processing')
                                 <span
                                     class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-blue-900 dark:text-blue-300">
                                     {{ ucwords($order->order_status) }}
@@ -102,16 +102,16 @@
                             {{ $order->longitude }}
                         </td>
                         <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $order->installation_date ?? '-' }}
+                            {{ $order->installation_date ? \Carbon\Carbon::parse($order->installation_date)->setTimezone('Asia/Jakarta') : '-' }}
                         </td>
                         <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $order->expired_date ?? '-' }}
+                            {{ $order->expired_date ? \Carbon\Carbon::parse($order->expired_date)->setTimezone('Asia/Jakarta') : '-' }}
                         </td>
                         <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $order->created_at }}
+                            {{ \Carbon\Carbon::parse($order->created_at)->setTimezone('Asia/Jakarta') }}
                         </td>
                         <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ $order->updated_at }}
+                            {{ \Carbon\Carbon::parse($order->updated_at)->setTimezone('Asia/Jakarta') }}
                         </td>
 
                         <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -208,7 +208,7 @@
                                     <div
                                         class="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600">
                                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                                            Bukti Pembayaran
+                                            Bukti
                                         </h3>
                                         <button type="button"
                                             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -233,17 +233,30 @@
                                                 <form action="{{ route('orders.confirmPayment', $order->id) }}"
                                                     method="POST">
                                                     @csrf
-                                                    <button type="submit"
-                                                        class="flex items-center text-green-700 border border-green-700 transition-all duration-200 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-green-500 dark:text-green-500 {{ $order->order_status == 'paid' ? 'hover:text-white hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-900' : 'opacity-50 cursor-not-allowed' }}"
-                                                        {{ $order->order_status == 'paid' ? '' : 'disabled' }}>
-                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="h-4 w-4 mr-2 -ml-0.5" fill="none"
-                                                            viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2" d="M5 13l4 4L19 7" />
-                                                        </svg>
-                                                        Confirm Payment
-                                                    </button>
+                                                    @if ($order->order_status == 'paid' || $order->order_status == 'hold')
+                                                        <button type="submit"
+                                                            class="flex items-center text-green-700 border border-green-700 transition-all duration-200 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-green-500 dark:text-green-500 hover:text-white hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-900">
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                class="h-4 w-4 mr-2 -ml-0.5" fill="none"
+                                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" d="M5 13l4 4L19 7" />
+                                                            </svg>
+                                                            Confirm Payment
+                                                        </button>
+                                                    @else
+                                                        <button type="submit"
+                                                            class="flex items-center text-green-700 border border-green-700 transition-all duration-200 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-green-500 dark:text-green-500 opacity-50 cursor-not-allowed"
+                                                            disabled>
+                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                class="h-4 w-4 mr-2 -ml-0.5" fill="none"
+                                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" d="M5 13l4 4L19 7" />
+                                                            </svg>
+                                                            Confirm Payment
+                                                        </button>
+                                                    @endif
                                                 </form>
                                             </div>
                                         @else

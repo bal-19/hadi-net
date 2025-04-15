@@ -33,10 +33,21 @@ class PackageController extends Controller
             'desc' => 'required|string'
         ]);
 
+        $duplicate = Package::where('name', $validate['name'])
+            ->where('bandwidth', $validate['bandwidth'])
+            ->where('duration', $validate['duration'])
+            ->where('price', $validate['price'])
+            ->exists();
+
+        if ($duplicate) {
+            return redirect()->route('packages.index')->with('error', 'Package with same name, bandwidth, duration, and price already exists.');
+        }
+
         Package::create($validate);
 
         return redirect()->route('packages.index')->with('success', 'Package created successfully!');
     }
+
 
     public function edit(Package $package)
     {

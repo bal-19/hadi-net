@@ -41,11 +41,20 @@ class UserController extends Controller
             'password' => 'required|string|min:8',
         ]);
 
+        $duplicate = User::where('name', $validated['name'])
+            ->where('born_date', $validated['born_date'])
+            ->exists();
+
+        if ($duplicate) {
+            return redirect()->route('users.index')->with('error', 'A user with the same name and birth date already exists.');
+        }
+
         $validated['password'] = Hash::make($validated['password']);
         User::create($validated);
 
         return redirect()->route('users.index')->with('success', 'User created successfully!');
     }
+
 
     public function edit(User $user)
     {

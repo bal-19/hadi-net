@@ -42,6 +42,7 @@
                                 <th scope="col" class="p-4">Order Date</th>
                                 <th scope="col" class="p-4">Order Status</th>
                                 <th scope="col" class="p-4">Installation Date</th>
+                                <th scope="col" class="p-4">Expired Date</th>
                                 <th scope="col" class="p-4">Total</th>
                                 <th scope="col" class="p-4">Action</th>
                             </tr>
@@ -61,10 +62,10 @@
                                         {{ $order->package->name }}
                                     </td>
                                     <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $order->order_date }}
+                                        {{ \Carbon\Carbon::parse($order->order_date)->setTimezone('Asia/Jakarta')->translatedFormat('l, d F Y H:i') }}
                                     </td>
                                     <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        @if ($order->order_status == 'unpaid')
+                                        @if ($order->order_status == 'unpaid' || $order->order_status == 'hold')
                                             <span
                                                 class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-yellow-900 dark:text-yellow-300">
                                                 {{ ucwords($order->order_status) }}
@@ -87,7 +88,10 @@
                                         @endif
                                     </td>
                                     <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{ $order->installation_date ?? '-' }}
+                                        {{ $order->installation_date ? \Carbon\Carbon::parse($order->installation_date)->setTimezone('Asia/Jakarta')->translatedFormat('l, d F Y H:i') : '-' }}
+                                    </td>
+                                    <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $order->expired_date ? \Carbon\Carbon::parse($order->expired_date)->setTimezone('Asia/Jakarta')->translatedFormat('l, d F Y H:i') : '-' }}
                                     </td>
                                     <td class="px-5 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         IDR {{ number_format($order->total, 2, ',', '.') }}

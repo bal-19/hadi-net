@@ -28,9 +28,9 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             if ($user->role == 'user') {
-                return redirect()->intended('/')->with('success', 'Login successfully!');
+                return redirect()->intended('/');
             } else {
-                return redirect()->intended('/admin/dashboard')->with('success', 'Login successfully!');
+                return redirect()->intended('/admin/dashboard');
             }
         }
 
@@ -73,7 +73,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect('/')->with('success', 'Account created successfully!');
+        return redirect()->intended('/');
     }
 
     public function logout(Request $request)
