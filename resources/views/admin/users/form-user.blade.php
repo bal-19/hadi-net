@@ -79,7 +79,8 @@
                             <input datepicker datepicker-autohide datepicker-buttons datepicker-autoselect-today
                                 datepicker-format="yyyy-mm-dd" id="born_date" name="born_date" type="text"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg transition-all duration-300 focus:ring-primary-600 focus:border-primary-600 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 @error('born_date') bg-red-50 border border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 @enderror"
-                                placeholder="Select date" value="{{ old('born_date', '') }}" autocomplete="off">
+                                placeholder="Select date" value="{{ old('born_date', $user->born_date ?? '') }}"
+                                autocomplete="off">
                         </div>
                         @error('born_date')
                             <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
@@ -102,8 +103,8 @@
                             autocomplete="off">
                     </div>
                     <div>
-                        <label for="password"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password
+                            {{ isset($user) ? '(Optional)' : '' }}</label>
                         <input type="password" name="password" id="password"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg transition-all duration-300 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="User password" autocomplete="off">
