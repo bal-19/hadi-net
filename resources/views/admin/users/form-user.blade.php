@@ -26,9 +26,9 @@
                     </div>
                     <div>
                         <label for="role"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white @error('role') text-red-700 dark:text-red-500 @enderror">Role</label>
                         <select id="role" name="role"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg transition-all duration-300 focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg transition-all duration-300 focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 @error('role') bg-red-50 border border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 @enderror">
                             @if (isset($user))
                                 <option>Select role</option>
                                 <option value="super admin" {{ $user->role == 'super admin' ? 'selected' : '' }}>Super
@@ -45,12 +45,15 @@
                                 <option value="user">User</option>
                             @endif
                         </select>
+                        @error('role')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <label for="gender"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender</label>
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white @error('gender') text-red-700 dark:text-red-500 @enderror">Gender</label>
                         <select id="gender" name="gender"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg transition-all duration-300 focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg transition-all duration-300 focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 @error('gender') bg-red-50 border border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 @enderror">
                             @if (isset($user))
                                 <option>Select gender</option>
                                 <option value="male" {{ $user->gender == 'male' ? 'selected' : '' }}>Male</option>
@@ -63,6 +66,9 @@
                                 <option value="other">Other</option>
                             @endif
                         </select>
+                        @error('gender')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="w-full">
                         <label for="born_date"
@@ -87,34 +93,48 @@
                         @enderror
                     </div>
                     <div class="w-full">
-                        <label for="phone_number" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone
+                        <label for="phone_number"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white @error('phone_number') text-red-700 dark:text-red-500 @enderror">Phone
                             Number</label>
                         <input type="text" name="phone_number" id="phone_number"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg transition-all duration-300 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg transition-all duration-300 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 @error('phone_number') bg-red-50 border border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 @enderror"
                             placeholder="User phone number" value="{{ old('phone_number', $user->phone_number ?? '') }}"
                             autocomplete="off">
+                        @error('phone_number')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <label for="email"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white @error('email') text-red-700 dark:text-red-500 @enderror">Email</label>
                         <input type="email" name="email" id="email"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg transition-all duration-300 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg transition-all duration-300 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 @error('email') bg-red-50 border border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 @enderror"
                             placeholder="example@gmail.com" value="{{ old('email', $user->email ?? '') }}"
                             autocomplete="off">
+                        @error('email')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
-                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password
+                        <label for="password"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white @error('password') text-red-700 dark:text-red-500 @enderror">Password
                             {{ isset($user) ? '(Optional)' : '' }}</label>
                         <input type="password" name="password" id="password"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg transition-all duration-300 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg transition-all duration-300 focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 @error('password') bg-red-50 border border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 @enderror"
                             placeholder="User password" autocomplete="off">
+                        @error('password')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="sm:col-span-2">
                         <label for="address"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white @error('address') text-red-700 dark:text-red-500 @enderror">Address</label>
                         <textarea id="address" rows="8" name="address"
-                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 transition-all duration-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 transition-all duration-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 @error('address') bg-red-50 border border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500 @enderror"
                             placeholder="User address">{{ old('address', $user->address ?? '') }}</textarea>
+                        @error('address')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
                 <button type="submit"

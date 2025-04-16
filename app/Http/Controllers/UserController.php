@@ -36,18 +36,10 @@ class UserController extends Controller
             'gender' => 'required|in:male,female,other',
             'born_date' => 'required|date|date_format:Y-m-d|before:18 years ago',
             'address' => 'required',
-            'phone_number' => 'required',
+            'phone_number' => 'required|unique:users,phone_number',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
         ]);
-
-        $duplicate = User::where('name', $validated['name'])
-            ->where('born_date', $validated['born_date'])
-            ->exists();
-
-        if ($duplicate) {
-            return redirect()->route('users.index')->with('error', 'A user with the same name and birth date already exists.');
-        }
 
         $validated['password'] = Hash::make($validated['password']);
         User::create($validated);
